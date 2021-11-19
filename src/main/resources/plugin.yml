@@ -1,0 +1,13 @@
+name: Kese
+version: '${project.version}'
+main: me.lynes.kese.Kese
+api-version: 1.13
+authors: [ Lynes ]
+description: kese ama çakması
+
+commands:
+  kese:
+    usage: /<command>
+  altin:
+   usage: /<command>
+
