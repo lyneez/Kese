@@ -13,8 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -48,12 +46,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                String pattern = "0.00";
-                DecimalFormat decimalFormat = (DecimalFormat)   NumberFormat.getNumberInstance(Locale.ENGLISH);
-                decimalFormat.applyPattern(pattern);
-
-                String formatted = decimalFormat.format(amount);
-
+                String formatted = economy.format(amount);
 
                 if (player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_INGOT), (int) amount)) {
                     if(!economy.depositPlayer(player, amount).transactionSuccess()) {
@@ -63,7 +56,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
 
                     player.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, (int) amount));
                     player.sendMessage("§6§lKese §fenvanterinizdeki " + formatted + " altın keseye koyuldu.");
-                    player.sendMessage("Yeni altın miktarı §6" + economy.getBalance(player) + " §6Altın");
+                    player.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(player)) + " §6Altın");
                     player.sendMessage("§a§l+ §a" + formatted);
                     return true;
                 } else {
@@ -92,19 +85,15 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                String pattern = "0.00";
-                DecimalFormat decimalFormat = (DecimalFormat)   NumberFormat.getNumberInstance(Locale.ENGLISH);
-                decimalFormat.applyPattern(pattern);
-
-                String formatted = decimalFormat.format(amount);
+                String formatted = economy.format(amount);
 
                 if (economy.getBalance(player) >= amount) {
-                    player.sendMessage("§6§lKese §f" + economy.getBalance(player) + " altın aldın.");
+                    player.sendMessage("§6§lKese §f" + economy.format(economy.getBalance(player)) + " altın aldın.");
                     if(!economy.withdrawPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
-                    player.sendMessage("Yeni altın miktarı §6" + economy.getBalance(player) + " §6Altın");
+                    player.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(player)) + " §6Altın");
                     player.sendMessage("§c§l- §c" + formatted);
                     HashMap<Integer, ItemStack> map = player.getInventory().addItem(new ItemStack(Material.GOLD_INGOT, (int) amount));
                     if (!map.isEmpty() && map.get(0).getAmount() != 0) {
@@ -139,7 +128,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            player.sendMessage("§6§lKese §f" + economy.getBalance(player) + " altınınız var.");
+            player.sendMessage("§6§lKese §f" + economy.format(economy.getBalance(player)) + " altınınız var.");
         }
 
         return true;

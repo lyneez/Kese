@@ -22,6 +22,9 @@ public final class Kese extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
+        saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         this.db = new Database();
 
         try {

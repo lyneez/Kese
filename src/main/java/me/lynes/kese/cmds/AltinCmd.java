@@ -11,11 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 
 public class AltinCmd implements CommandExecutor, TabCompleter {
@@ -72,15 +69,11 @@ public class AltinCmd implements CommandExecutor, TabCompleter {
                     }
 
 
-                    String pattern = "0.00";
-                    DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getNumberInstance(Locale.ENGLISH);
-                    decimalFormat.applyPattern(pattern);
+                    String formatted = economy.format(amount);
 
-                    String formatted = decimalFormat.format(amount);
-
-                    player.sendMessage("Yeni altın miktarı §6" + economy.getBalance(player) + " §6Altın");
+                    player.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(player)) + " §6Altın");
                     player.sendMessage("§c§l- §c" + formatted);
-                    target.sendMessage("Yeni altın miktarı §6" + economy.getBalance(target) + " §6Altın");
+                    target.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(target)) + " §6Altın");
                     target.sendMessage("§a§l+ §a" + formatted);
                     return true;
                 } else {
