@@ -34,7 +34,7 @@ public class Database {
     public void setup() throws SQLException {
         try (Statement s = connection.createStatement()) {
             s.executeUpdate("CREATE TABLE IF NOT EXISTS economy (" +
-                    "`uuid` varchar(32) NOT NULL, `balance` double(1000) NOT NULL,`username` varchar(100) NOT NULL, PRIMARY KEY (`uuid`));");
+                    "`uuid` varchar(32) NOT NULL, `balance` double(1000) NOT NULL, PRIMARY KEY (`uuid`));");
         }
     }
 

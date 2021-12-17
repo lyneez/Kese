@@ -44,7 +44,7 @@ public class AltinCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (economy.getBalance(player) >= amount) {
+                if (economy.has(player, amount)) {
                     Player target = Bukkit.getPlayer(args[1]);
 
                     if (target == null) {

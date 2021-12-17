@@ -46,7 +46,7 @@ public class KeseVaultEconomy implements Economy {
         try {
             format = new DecimalFormat(Kese.getInstance().getConfig().getString("decimal_format"), symbols);
         } catch (NullPointerException | IllegalArgumentException ex) {
-            format = new DecimalFormat("0.00", symbols);
+            format = new DecimalFormat("0.0#", symbols);
         }
 
         return format.format(amount);
@@ -296,10 +296,9 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(String player) {
-        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?, ?)", s -> {
+        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?)", s -> {
             s.setString(1, Bukkit.getOfflinePlayer(player).getUniqueId().toString());
             s.setDouble(2, 0);
-            s.setString(3, Bukkit.getOfflinePlayer(player).getName());
         })) {
             return statement.executeUpdate() > 0;
         } catch (SQLException exception) {
@@ -311,10 +310,9 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?, ?)", s -> {
+        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?)", s -> {
             s.setString(1, offlinePlayer.getUniqueId().toString());
             s.setDouble(2, 0);
-            s.setString(3, offlinePlayer.getName());
         })) {
             return statement.executeUpdate() > 0;
         } catch (SQLException exception) {
@@ -326,10 +324,9 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(String player, String world) {
-        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?, ?)", s -> {
+        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?)", s -> {
             s.setString(1, Bukkit.getOfflinePlayer(player).getUniqueId().toString());
             s.setDouble(2, 0);
-            s.setString(3, Bukkit.getOfflinePlayer(player).getName());
         })) {
             return statement.executeUpdate() > 0;
         } catch (SQLException exception) {
@@ -341,10 +338,9 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String world) {
-        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?, ?)", s -> {
+        try (PreparedStatement statement = db.statement("INSERT OR IGNORE INTO economy VALUES (?, ?)", s -> {
             s.setString(1, offlinePlayer.getUniqueId().toString());
             s.setDouble(2, 0);
-            s.setString(3, offlinePlayer.getName());
         })) {
             return statement.executeUpdate() > 0;
         } catch (SQLException exception) {

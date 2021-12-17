@@ -87,7 +87,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
 
                 String formatted = economy.format(amount);
 
-                if (economy.getBalance(player) >= amount) {
+                if (economy.has(player, amount)) {
                     player.sendMessage("§6§lKese §f" + economy.format(economy.getBalance(player)) + " altın aldın.");
                     if(!economy.withdrawPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
