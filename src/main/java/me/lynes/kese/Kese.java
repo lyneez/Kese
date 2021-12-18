@@ -1,6 +1,7 @@
 package me.lynes.kese;
 
 import me.lynes.kese.cmds.AltinCmd;
+import me.lynes.kese.cmds.KeseAdminCmd;
 import me.lynes.kese.cmds.KeseCmd;
 import me.lynes.kese.vault.KeseVaultEconomy;
 import net.milkbowl.vault.economy.Economy;
@@ -42,8 +43,7 @@ public final class Kese extends JavaPlugin {
         Bukkit.getServicesManager().register(Economy.class, economy, instance, ServicePriority.Normal);
         getCommand("kese").setExecutor(new KeseCmd());
         getCommand("altin").setExecutor(new AltinCmd());
-        getCommand("kese").setTabCompleter(new KeseCmd());
-        getCommand("altin").setTabCompleter(new AltinCmd());
+        getCommand("keseadmin").setExecutor(new KeseAdminCmd());
     }
 
     @Override

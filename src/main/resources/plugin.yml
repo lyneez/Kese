@@ -8,6 +8,22 @@ description: kese ama çakması
 commands:
   kese:
     usage: /<command>
+    permission: kese.player
   altin:
    usage: /<command>
+   permission: kese.player
+  keseadmin:
+    usage: /<command>
+    permission: kese.admin
+
+permissions:
+  kese.*:
+    children:
+      kese.player: true
+      kese.admin: true
+    default: op
+  kese.player:
+    default: true
+  kese.admin:
+    default: op
 
