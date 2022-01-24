@@ -11,7 +11,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -21,7 +20,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
     private final KeseVaultEconomy economy = plugin.getEconomy();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             Bukkit.getLogger().log(Level.INFO, "Bu komudu sadece oyuncular kullanabilir.");
             return true;
@@ -49,7 +48,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                 String formatted = economy.format(amount);
 
                 if (player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_INGOT), (int) amount)) {
-                    if(!economy.depositPlayer(player, amount).transactionSuccess()) {
+                    if (!economy.depositPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
@@ -89,7 +88,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
 
                 if (economy.has(player, amount)) {
                     player.sendMessage("§6§lKese §f" + economy.format(economy.getBalance(player)) + " altın aldın.");
-                    if(!economy.withdrawPlayer(player, amount).transactionSuccess()) {
+                    if (!economy.withdrawPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
@@ -107,7 +106,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                                 player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.GOLD_INGOT, 64));
                             }
 
-                            if(map.get(0).getAmount() % 64 != 0) {
+                            if (map.get(0).getAmount() % 64 != 0) {
                                 player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.GOLD_INGOT, map.get(0).getAmount() % 64));
                             }
                         }
@@ -135,9 +134,9 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1){
+        if (args.length == 1) {
             completions.add("al");
             completions.add("koy");
             completions.add("yardım");

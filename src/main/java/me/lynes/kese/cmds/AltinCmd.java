@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class AltinCmd implements CommandExecutor, TabCompleter {
     private final KeseVaultEconomy economy = plugin.getEconomy();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             Bukkit.getLogger().log(Level.INFO, "Bu komudu sadece oyuncular kullanabilir.");
             return true;
@@ -58,12 +57,12 @@ public class AltinCmd implements CommandExecutor, TabCompleter {
                         return true;
                     }
 
-                    if(!economy.withdrawPlayer(player, amount).transactionSuccess()) {
+                    if (!economy.withdrawPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
 
-                    if(!economy.depositPlayer(target, amount).transactionSuccess()) {
+                    if (!economy.depositPlayer(target, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
@@ -95,9 +94,9 @@ public class AltinCmd implements CommandExecutor, TabCompleter {
 
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1){
+        if (args.length == 1) {
             completions.add("gonder");
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
         }
