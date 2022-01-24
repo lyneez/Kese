@@ -6,6 +6,7 @@ import org.intellij.lang.annotations.Language;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class Database {
@@ -54,22 +55,10 @@ public class Database {
         }
     }
 
-    public PreparedStatement statement(@Language("SQL") String query, Initializer initializer) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(query);
-        initializer.apply(statement);
-        return statement;
-    }
-
-    public ResultSet result(@Language("SQL") String query, Initializer initializer) throws SQLException {
-        return statement(query, initializer).executeQuery();
-    }
-
     public void report(SQLException exception) {
         plugin.getLogger().log(Level.SEVERE, ChatColor.RED + "Unhandled exception: " + exception.getMessage(), exception);
     }
 
-    public interface Initializer {
-        void apply(PreparedStatement s) throws SQLException;
-    }
+
 }
 
