@@ -13,7 +13,6 @@ import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class KeseAdminCmd implements CommandExecutor, TabCompleter {
     private final Kese plugin = Kese.getInstance();
@@ -21,13 +20,6 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            Bukkit.getLogger().log(Level.INFO, "Bu komudu sadece oyuncular kullanabilir.");
-            return true;
-        }
-
-        Player player = (Player) sender;
-
         //SET KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("set")) {
             if (args.length == 3) {
@@ -35,33 +27,33 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
                 try {
                     amount = Integer.parseInt(args[2]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("§cMiktar sayı olmalıdır.");
+                    sender.sendMessage("§cMiktar sayı olmalıdır.");
                     return true;
                 }
 
                 if (amount < 0) {
-                    player.sendMessage("§cMiktar sayı olmalıdır.");
+                    sender.sendMessage("§cMiktar sayı olmalıdır.");
                     return true;
                 }
 
                 Player target = Bukkit.getPlayer(args[1]);
 
                 if (target == null) {
-                    player.sendMessage("§cBelirtilen oyuncu bulunamadı ya da çevrimiçi değil.");
+                    sender.sendMessage("§cBelirtilen oyuncu bulunamadı ya da çevrimiçi değil.");
                     return true;
                 }
 
                 if (economy.setBalance(target, amount).type == EconomyResponse.ResponseType.SUCCESS) {
-                    player.sendMessage("§aBaşarıyla " + target.getName() + " isimli oyuncunun altın miktarı " + economy.format(amount) + " yapıldı.");
+                    sender.sendMessage("§aBaşarıyla " + target.getName() + " isimli oyuncunun altın miktarı " + economy.format(amount) + " yapıldı.");
                 } else {
-                    player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
+                    sender.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                 }
 
             } else {
-                sendHelpMessage(player);
+                sendHelpMessage(sender);
             }
         } else {
-            sendHelpMessage(player);
+            sendHelpMessage(sender);
         }
 
 
@@ -78,7 +70,7 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
         return null;
     }
 
-    private void sendHelpMessage(Player player) {
+    private void sendHelpMessage(CommandSender player) {
         player.sendMessage("§6.oOo.__________________.[ §e/keseadmin §6].__________________.oOo.");
         player.sendMessage("§3/keseadmin §bset (oyuncu) (miktar) §7Hedef oyuncunun altın miktarını (miktar)'a değiştirir.");
     }

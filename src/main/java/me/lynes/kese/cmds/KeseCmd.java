@@ -87,11 +87,12 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                 String formatted = economy.format(amount);
 
                 if (economy.has(player, amount)) {
-                    player.sendMessage("§6§lKese §f" + economy.format(economy.getBalance(player)) + " altın aldın.");
+                    double bal = economy.getBalance(player);
                     if (!economy.withdrawPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
+                    player.sendMessage("§6§lKese §f" + economy.format(bal) + " altın aldın.");
                     player.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(player)) + " §6Altın");
                     player.sendMessage("§c§l- §c" + formatted);
                     HashMap<Integer, ItemStack> map = player.getInventory().addItem(new ItemStack(Material.GOLD_INGOT, (int) amount));
