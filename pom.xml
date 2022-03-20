@@ -6,7 +6,7 @@
 
     <groupId>me.lynes</groupId>
     <artifactId>kese</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.1</version>
     <packaging>jar</packaging>
 
     <name>Kese</name>
