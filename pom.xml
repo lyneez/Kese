@@ -6,12 +6,12 @@
 
     <groupId>me.lynes</groupId>
     <artifactId>kese</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Kese</name>
 
-    <description>kese ama çakması</description>
+    <description>altın tabanlı yarı fiziksel ekonomi eklentisi</description>
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -3,7 +3,7 @@ version: '${project.version}'
 main: me.lynes.kese.Kese
 api-version: 1.13
 authors: [ Lynes ]
-description: kese ama çakması
+description: altın tabanlı yarı fiziksel ekonomi eklentisi
 
 commands:
   kese:

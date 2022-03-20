@@ -46,22 +46,38 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                 }
 
                 String formatted = economy.format(amount);
-
-                if (player.getInventory().containsAtLeast(new ItemStack(Material.GOLD_INGOT), (int) amount)) {
+                int z = 0;
+                HashMap<Integer, ItemStack> hm = player.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, (int) amount));
+                if (hm.isEmpty()) {
                     if (!economy.depositPlayer(player, amount).transactionSuccess()) {
                         player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
                         return true;
                     }
 
-                    player.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, (int) amount));
                     player.sendMessage("§6§lKese §fenvanterinizdeki " + formatted + " altın keseye koyuldu.");
                     player.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(player)) + " §6Altın");
                     player.sendMessage("§a§l+ §a" + formatted);
+
                     return true;
                 } else {
-                    player.sendMessage("§cEnvanterinizde yeterli miktarda altın yok.");
+                    for (Map.Entry<Integer, ItemStack> entry : hm.entrySet()) {
+                        ItemStack value = entry.getValue();
+                        z += value.getAmount();
+                    }
+
+                    if (!economy.depositPlayer(player, amount - z).transactionSuccess()) {
+                        player.sendMessage("§cBir hata oluştu, işlem gerçekleştirilemiyor.");
+                        return true;
+                    }
+
+                    formatted = economy.format(amount - z);
+                    player.sendMessage("§6§lKese §fenvanterinizdeki " + formatted + " altın keseye koyuldu.");
+                    player.sendMessage("Yeni altın miktarı §6" + economy.format(economy.getBalance(player)) + " §6Altın");
+                    player.sendMessage("§a§l+ §a" + formatted);
+
                     return true;
                 }
+
             } else {
                 player.sendMessage("§cMiktar sayı olmalıdır.");
                 return true;
