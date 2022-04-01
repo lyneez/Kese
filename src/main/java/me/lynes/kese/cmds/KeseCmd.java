@@ -118,8 +118,7 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
                         if (map.get(0).getAmount() <= 64) {
                             player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.GOLD_INGOT, map.get(0).getAmount()));
                         } else {
-                            player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.GOLD_INGOT, 64));
-                            for (int i = map.get(0).getAmount() - 64; i >= 64; i = i - 64) {
+                            for (int i = map.get(0).getAmount(); i >= 64; i = i - 64) {
                                 player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.GOLD_INGOT, 64));
                             }
 
