@@ -29,7 +29,6 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
 
-        //KOY KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("koy")) {
             if (args.length == 2) {
                 double amount;
@@ -84,7 +83,6 @@ public class KeseCmd implements CommandExecutor, TabCompleter {
             }
         }
 
-        //AL KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("al")) {
             if (args.length == 2) {
                 double amount;

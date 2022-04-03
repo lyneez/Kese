@@ -20,7 +20,7 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        //SET KOMUDU
+
         if (args.length > 0 && args[0].equalsIgnoreCase("set")) {
             if (args.length == 3) {
                 double amount;
@@ -36,6 +36,9 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                /* NOT:
+                 getOfflinePlayer offline mode içinde sorun çıkarmıyor
+                 */
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
                 if (!target.hasPlayedBefore()) {
@@ -56,7 +59,6 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
             }
         }
 
-        //ADD KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("add")) {
             if (args.length == 3) {
                 double amount;
@@ -92,7 +94,6 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
             }
         }
 
-        //REMOVE KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("remove")) {
             if (args.length == 3) {
                 double amount;
@@ -128,7 +129,6 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
             }
         }
 
-        //BALANCE KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("balance")) {
             if (args.length == 2) {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);

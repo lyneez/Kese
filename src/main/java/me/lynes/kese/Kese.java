@@ -3,6 +3,8 @@ package me.lynes.kese;
 import me.lynes.kese.cmds.AltinCmd;
 import me.lynes.kese.cmds.KeseAdminCmd;
 import me.lynes.kese.cmds.KeseCmd;
+import me.lynes.kese.listeners.PlayerListener;
+import me.lynes.kese.utils.UpdateChecker;
 import me.lynes.kese.vault.KeseVaultEconomy;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -35,8 +37,14 @@ public final class Kese extends JavaPlugin {
             getLogger().log(Level.SEVERE, ChatColor.RED + "Unhandled exception: " + ex.getMessage(), ex);
         }
 
-        //bStats
+        // bStats
         Metrics metrics = new Metrics(this, 13183);
+
+        // Update checker
+        UpdateChecker.check(this);
+        UpdateChecker.sendToConsole(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> UpdateChecker.check(this), 1728000,
+                1728000); // 1 gün
 
         // Vault integration
         economy = new KeseVaultEconomy();
@@ -44,6 +52,7 @@ public final class Kese extends JavaPlugin {
         getCommand("kese").setExecutor(new KeseCmd());
         getCommand("altin").setExecutor(new AltinCmd());
         getCommand("keseadmin").setExecutor(new KeseAdminCmd());
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
     }
 
     @Override

@@ -27,7 +27,6 @@ public class AltinCmd implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
 
-        //GONDER KOMUDU
         if (args.length > 0 && args[0].equalsIgnoreCase("gonder")) {
             if (args.length == 3) {
                 double amount;
