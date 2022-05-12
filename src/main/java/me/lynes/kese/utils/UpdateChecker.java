@@ -30,7 +30,7 @@ public class UpdateChecker {
     private static String version = "";
 
     public static void sendToConsole(Plugin plugin) {
-        String currentversion = plugin.getDescription().getVersion();
+        String currentVersion = plugin.getDescription().getVersion();
 
         if (upToDate) {
             plugin.getLogger().info("Kesenin son sürümünü kullanıyorsunuz!");
@@ -38,7 +38,7 @@ public class UpdateChecker {
             List<String> lines = new ArrayList<>();
             lines.add("Kesenin yeni bir sürümü var!");
             lines.add(" ");
-            lines.add(String.format("Sürümünüz: %s%s", ChatColor.RED, currentversion));
+            lines.add(String.format("Sürümünüz: %s%s", ChatColor.RED, currentVersion));
             lines.add(String.format("Son sürüm: %s%s", ChatColor.GREEN, version));
             lines.add(" ");
             lines.add("Lütfen son sürüme güncelleyin.");
@@ -51,7 +51,7 @@ public class UpdateChecker {
     }
 
     public static void sendToPlayer(Plugin plugin, Player player) {
-        String currentversion = plugin.getDescription().getVersion();
+        String currentVersion = plugin.getDescription().getVersion();
 
         if (!upToDate) {
             final ComponentBuilder lore = new ComponentBuilder("Link: ").bold(true).append("https://github.com/lyneez/Kese/releases/latest").bold(false);
@@ -62,7 +62,7 @@ public class UpdateChecker {
             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, lore.create()));
 
             player.sendMessage(ChatColor.GOLD + "Kesenin" + ChatColor.GRAY + " yeni bir sürümü var.");
-            player.sendMessage(ChatColor.DARK_GRAY + "Son sürüm: " + ChatColor.GREEN + version + ChatColor.DARK_GRAY + " | Sürümünüz: " + ChatColor.RED + currentversion);
+            player.sendMessage(ChatColor.DARK_GRAY + "Son sürüm: " + ChatColor.GREEN + version + ChatColor.DARK_GRAY + " | Sürümünüz: " + ChatColor.RED + currentVersion);
             player.spigot().sendMessage(component);
             player.sendMessage("");
         }
@@ -70,7 +70,7 @@ public class UpdateChecker {
 
 
     public static void check(Plugin plugin) {
-        String currentversion = plugin.getDescription().getVersion();
+        String currentVersion = plugin.getDescription().getVersion();
 
         try {
             URL url = new URL("https://api.github.com/repos/lyneez/kese/releases");
@@ -81,9 +81,9 @@ public class UpdateChecker {
             JsonObject release = array.get(0).getAsJsonObject();
 
             version = release.get("tag_name").getAsString();
-            upToDate = version.equals(currentversion);
+            upToDate = version.equals(currentVersion);
         } catch (Throwable t) {
-            version = currentversion;
+            version = currentVersion;
         }
     }
 
