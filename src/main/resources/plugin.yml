@@ -4,6 +4,7 @@ main: me.lynes.kese.Kese
 api-version: 1.13
 authors: [ Lynes ]
 depend: [ Vault ]
+loadbefore: [Towny] # townynin önceden yüklenmemesi için
 description: altın tabanlı yarı fiziksel ekonomi eklentisi
 
 commands:
