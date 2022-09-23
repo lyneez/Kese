@@ -5,7 +5,7 @@ api-version: 1.13
 authors: [ Lynes ]
 depend: [ Vault ]
 loadbefore: [Towny] # townynin önceden yüklenmemesi için
-description: altın tabanlı yarı fiziksel ekonomi eklentisi
+description: altın tabanlı yarı fiziksel yarı sanal ekonomi eklentisi
 
 commands:
   kese:

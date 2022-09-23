@@ -1,5 +1,5 @@
 # Kese
-Spigot için altın tabanlı yarı fiziksel yarı sanal ekonomi eklentisi.
+Spigot için altın tabanlı yarı fiziksel yarı sanal ekonomi eklentisi. (Vault)
 
 ![version](https://img.shields.io/badge/release-1.6.1-green.svg)
 ![license](https://img.shields.io/github/license/lyneez/Kese)
