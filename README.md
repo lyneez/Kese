@@ -1,7 +1,7 @@
 # Kese
 Spigot için altın tabanlı yarı fiziksel yarı sanal ekonomi eklentisi. (Vault)
 
-![version](https://img.shields.io/badge/release-1.6.1-green.svg)
+![version](https://img.shields.io/github/v/release/lyneez/Kese)
 ![license](https://img.shields.io/github/license/lyneez/Kese)
 
 ### İndir
