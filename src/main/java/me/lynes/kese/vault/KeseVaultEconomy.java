@@ -2,9 +2,9 @@ package me.lynes.kese.vault;
 
 import me.lynes.kese.Database;
 import me.lynes.kese.Kese;
+import me.lynes.kese.utils.PlayerUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.sql.PreparedStatement;
@@ -12,7 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class KeseVaultEconomy implements Economy {
     private static final EconomyResponse NOT_IMPLEMENTED = new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "Not implemented");
@@ -64,8 +69,24 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String player) {
+        if (plugin.getServer().getOnlineMode()) {
+            OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
+            if (target != null) {
+                try (PreparedStatement statement = db.getConnection().prepareStatement("SELECT * FROM economy WHERE uuid = ?")) {
+                    statement.setString(1, target.getUniqueId().toString());
+                    try (ResultSet resultSet = statement.executeQuery()) {
+                        return resultSet.next();
+                    } catch (SQLException exception) {
+                        db.report(exception);
+                    }
+                } catch (SQLException exception) {
+                    db.report(exception);
+                }
+            }
+        }
+
         try (PreparedStatement statement = db.getConnection().prepareStatement("SELECT * FROM economy WHERE uuid = ?")) {
-            statement.setString(1, Bukkit.getOfflinePlayer(player).getUniqueId().toString());
+            statement.setString(1, getUUID(player));
             try (ResultSet resultSet = statement.executeQuery()) {
                 return resultSet.next();
             } catch (SQLException exception) {
@@ -74,6 +95,7 @@ public class KeseVaultEconomy implements Economy {
         } catch (SQLException exception) {
             db.report(exception);
         }
+
 
         return false;
     }
@@ -106,8 +128,28 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public double getBalance(String player) {
+        if (plugin.getServer().getOnlineMode()) {
+            OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
+            if (target != null) {
+                try (PreparedStatement statement = db.getConnection().prepareStatement("SELECT balance FROM economy WHERE uuid = ?")) {
+                    statement.setString(1, target.getUniqueId().toString());
+                    try (ResultSet resultSet = statement.executeQuery()) {
+                        if (resultSet.next()) {
+                            return resultSet.getDouble(1);
+                        } else {
+                            return 0;
+                        }
+                    } catch (SQLException exception) {
+                        db.report(exception);
+                    }
+                } catch (SQLException exception) {
+                    db.report(exception);
+                }
+            }
+        }
+
         try (PreparedStatement statement = db.getConnection().prepareStatement("SELECT balance FROM economy WHERE uuid = ?")) {
-            statement.setString(1, Bukkit.getOfflinePlayer(player).getUniqueId().toString());
+            statement.setString(1, getUUID(player));
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getDouble(1);
@@ -120,7 +162,6 @@ public class KeseVaultEconomy implements Economy {
         } catch (SQLException exception) {
             db.report(exception);
         }
-
         return 0;
     }
 
@@ -176,7 +217,7 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String player, double amount) {
-        return setBalance(Bukkit.getOfflinePlayer(player), getBalance(player) - amount);
+        return setBalance(player, getBalance(player) - amount);
     }
 
     @Override
@@ -186,17 +227,17 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String player, String world, double amount) {
-        return setBalance(Bukkit.getOfflinePlayer(player), getBalance(player) - amount);
+        return withdrawPlayer(player, amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String world, double amount) {
-        return setBalance(offlinePlayer, getBalance(offlinePlayer) - amount);
+        return withdrawPlayer(offlinePlayer, amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(String player, double amount) {
-        return setBalance(Bukkit.getOfflinePlayer(player), getBalance(player) + amount);
+        return setBalance(player, getBalance(player) + amount);
     }
 
     @Override
@@ -206,12 +247,12 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String player, String world, double amount) {
-        return setBalance(Bukkit.getOfflinePlayer(player), getBalance(player) + amount);
+        return depositPlayer(player, amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String world, double amount) {
-        return setBalance(offlinePlayer, getBalance(offlinePlayer) + amount);
+        return depositPlayer(offlinePlayer, amount);
     }
 
     @Override
@@ -276,17 +317,32 @@ public class KeseVaultEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(String player) {
+        if (plugin.getServer().getOnlineMode()) {
+            OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
+            if (target != null) {
+                try (PreparedStatement statement = this
+                        .db.getConnection()
+                        .prepareStatement("INSERT OR IGNORE INTO economy VALUES (?, ?)")
+                ) {
+                    statement.setString(1, target.getUniqueId().toString());
+                    statement.setDouble(2, 0);
+                    return statement.executeUpdate() > 0;
+                } catch (SQLException exception) {
+                    db.report(exception);
+                }
+            }
+        }
+
         try (PreparedStatement statement = this
                 .db.getConnection()
                 .prepareStatement("INSERT OR IGNORE INTO economy VALUES (?, ?)")
         ) {
-            statement.setString(1, Bukkit.getOfflinePlayer(player).getUniqueId().toString());
+            statement.setString(1, getUUID(player));
             statement.setDouble(2, 0);
             return statement.executeUpdate() > 0;
         } catch (SQLException exception) {
             db.report(exception);
         }
-
         return false;
     }
 
@@ -331,6 +387,34 @@ public class KeseVaultEconomy implements Economy {
         }
 
         return new EconomyResponse(balance, balance, EconomyResponse.ResponseType.SUCCESS, "");
+    }
+
+    public EconomyResponse setBalance(String player, double balance) {
+        if (plugin.getServer().getOnlineMode()) {
+            OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
+            if (target != null) {
+                return setBalance(target, balance);
+            }
+        }
+
+        createPlayerAccount(player);
+
+        try (PreparedStatement statement = db
+                .getConnection()
+                .prepareStatement("UPDATE economy SET balance = ? WHERE uuid = ?")) {
+            statement.setDouble(1, balance);
+            statement.setString(2, getUUID(player));
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            db.report(exception);
+            return new EconomyResponse(balance, balance, EconomyResponse.ResponseType.FAILURE, "SQLException");
+        }
+
+        return new EconomyResponse(balance, balance, EconomyResponse.ResponseType.SUCCESS, "");
+    }
+
+    public String getUUID(String player) {
+        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + player).getBytes(UTF_8)).toString();
     }
 
 }

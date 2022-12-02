@@ -8,12 +8,10 @@ import me.lynes.kese.utils.UpdateChecker;
 import me.lynes.kese.vault.KeseVaultEconomy;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 public final class Kese extends JavaPlugin {
 
@@ -33,8 +31,8 @@ public final class Kese extends JavaPlugin {
         try {
             db.connect();
             db.setup();
-        } catch (SQLException ex) {
-            getLogger().log(Level.SEVERE, ChatColor.RED + "Unhandled exception: " + ex.getMessage(), ex);
+        } catch (SQLException exception) {
+            db.report(exception);
         }
 
         // bStats

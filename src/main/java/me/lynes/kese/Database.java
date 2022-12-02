@@ -1,10 +1,11 @@
 package me.lynes.kese;
 
-import org.bukkit.ChatColor;
-
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 
 public class Database {
@@ -54,7 +55,7 @@ public class Database {
     }
 
     public void report(SQLException exception) {
-        plugin.getLogger().log(Level.SEVERE, ChatColor.RED + "Unhandled exception: " + exception.getMessage(), exception);
+        plugin.getLogger().log(Level.SEVERE, "Unhandled exception: " + exception.getMessage(), exception);
     }
 
 

@@ -1,9 +1,9 @@
 package me.lynes.kese.cmds;
 
 import me.lynes.kese.Kese;
+import me.lynes.kese.utils.PlayerUtil;
 import me.lynes.kese.vault.KeseVaultEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,12 +36,9 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                /* NOT:
-                 getOfflinePlayer offline mode içinde sorun çıkarmıyor
-                 */
-                OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                OfflinePlayer target = PlayerUtil.getOfflinePlayer(args[1]);
 
-                if (!target.hasPlayedBefore()) {
+                if (target == null) {
                     sender.sendMessage("§cBelirtilen oyuncu bulunamadı.");
                     return true;
                 }
@@ -74,9 +71,9 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                OfflinePlayer target = PlayerUtil.getOfflinePlayer(args[1]);
 
-                if (!target.hasPlayedBefore()) {
+                if (target == null) {
                     sender.sendMessage("§cBelirtilen oyuncu bulunamadı.");
                     return true;
                 }
@@ -109,9 +106,9 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                OfflinePlayer target = PlayerUtil.getOfflinePlayer(args[1]);
 
-                if (!target.hasPlayedBefore()) {
+                if (target == null) {
                     sender.sendMessage("§cBelirtilen oyuncu bulunamadı.");
                     return true;
                 }
@@ -131,9 +128,9 @@ public class KeseAdminCmd implements CommandExecutor, TabCompleter {
 
         if (args.length > 0 && args[0].equalsIgnoreCase("balance")) {
             if (args.length == 2) {
-                OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                OfflinePlayer target = PlayerUtil.getOfflinePlayer(args[1]);
 
-                if (!target.hasPlayedBefore()) {
+                if (target == null) {
                     sender.sendMessage("§cBelirtilen oyuncu bulunamadı.");
                     return true;
                 }
