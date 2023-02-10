@@ -72,16 +72,7 @@ public class KeseVaultEconomy implements Economy {
         if (plugin.getServer().getOnlineMode()) {
             OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
             if (target != null) {
-                try (PreparedStatement statement = db.getConnection().prepareStatement("SELECT * FROM economy WHERE uuid = ?")) {
-                    statement.setString(1, target.getUniqueId().toString());
-                    try (ResultSet resultSet = statement.executeQuery()) {
-                        return resultSet.next();
-                    } catch (SQLException exception) {
-                        db.report(exception);
-                    }
-                } catch (SQLException exception) {
-                    db.report(exception);
-                }
+                return hasAccount(target);
             }
         }
 
@@ -131,20 +122,7 @@ public class KeseVaultEconomy implements Economy {
         if (plugin.getServer().getOnlineMode()) {
             OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
             if (target != null) {
-                try (PreparedStatement statement = db.getConnection().prepareStatement("SELECT balance FROM economy WHERE uuid = ?")) {
-                    statement.setString(1, target.getUniqueId().toString());
-                    try (ResultSet resultSet = statement.executeQuery()) {
-                        if (resultSet.next()) {
-                            return resultSet.getDouble(1);
-                        } else {
-                            return 0;
-                        }
-                    } catch (SQLException exception) {
-                        db.report(exception);
-                    }
-                } catch (SQLException exception) {
-                    db.report(exception);
-                }
+                return getBalance(target);
             }
         }
 
@@ -320,16 +298,7 @@ public class KeseVaultEconomy implements Economy {
         if (plugin.getServer().getOnlineMode()) {
             OfflinePlayer target = PlayerUtil.getOfflinePlayer(player);
             if (target != null) {
-                try (PreparedStatement statement = this
-                        .db.getConnection()
-                        .prepareStatement("INSERT OR IGNORE INTO economy VALUES (?, ?)")
-                ) {
-                    statement.setString(1, target.getUniqueId().toString());
-                    statement.setDouble(2, 0);
-                    return statement.executeUpdate() > 0;
-                } catch (SQLException exception) {
-                    db.report(exception);
-                }
+                return createPlayerAccount(target);
             }
         }
 
